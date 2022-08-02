@@ -11,31 +11,21 @@ int findInMass(int target, int* mass, std::size_t size)
 int Voyageur::Recursive_Complete(int knot, int iter)
 {
 	int answer = 1;
-	tempWay[iter] = knot;
-	if (iter == N - 1) {
-		if (matrix[knot][0] > 0 && (totalCost > tempCost || totalCost == 0)) {
-			totalCost = tempCost;
-			answer = 0;
-			for (std::size_t i = 0; i < N; i++)
-				way[i] = tempWay[i];
-		}
-	}
-	else {
-		int i = 0;
-		while (i < N) {
-			while (i < N && findInMass(i, tempWay, N)) {
-				i++;
-			}
-			if (i < N && matrix[knot][i] > 0) {
-				answer = 0;
-				tempCost += matrix[knot][i];
-				Recursive_Complete(i, iter + 1);
-				tempCost -= matrix[knot][i];
-				tempWay[iter + 1] = -1;
-			}
+	tempWay[iter] = knot; 
+	int i = 0;
+	while (i < N) {
+		while (i < N && findInMass(i, tempWay, N)) {
 			i++;
 		}
-	}
+		if (i < N && matrix[knot][i] > 0) {
+			answer = 0;
+			tempCost += matrix[knot][i];
+			Recursive_Complete(i, iter + 1);
+			tempCost -= matrix[knot][i];
+			tempWay[iter + 1] = -1;
+		}
+		i++;
+	} 
 	return answer;
 }
 

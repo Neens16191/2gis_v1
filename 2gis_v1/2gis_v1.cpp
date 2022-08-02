@@ -1,7 +1,7 @@
 ﻿#include "CommisVoyageur.h"
 #include <fstream>
 #include <string>
-#include <sstream>
+#include <sstream> 
 
 #define HELPINFO "\nYou have called up additional information about the program. \n\
 This program is designed to fulfill the company's test task 2 gis from September 2021.\
