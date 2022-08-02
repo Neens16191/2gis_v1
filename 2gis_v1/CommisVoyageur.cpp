@@ -11,9 +11,7 @@ int Voyageur::Recursive_Complete(int knot, int iter) {
   int answer = 1;
   tempWay[iter] = knot;
   int i = 0;
-  // printf("ITER = %d; KNOT = %d\n", iter, knot);
   if (iter == N - 1) {
-    // printf("THIS IS LAST KNOT %d\n", knot);
     if ((totalCost > tempCost || totalCost == 0)) {
       totalCost = tempCost;
       answer = 0;
@@ -66,13 +64,6 @@ bool Voyageur::minWayToUnusedElem(int target, int str_number) {
   }
   return true;
 }
-
-// int minForEachElemInMass(int target, int* mass, std::size_t size)
-//{
-//	std::size_t i = 0;
-//	for (; i < size && target <= mass[i]; i++);
-//	return i == size;
-// }
 
 Voyageur::Voyageur(int startMatrix[26][26], int NCount) {
   N = NCount;

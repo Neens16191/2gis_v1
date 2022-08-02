@@ -14,8 +14,9 @@ The program is designed exclusively for educational purposes. \nAbout the progra
 -h - opening a window with information.\n\n \
 Mikhail Tsarev 2022\n\n"
 
-int main(int argc, char* argv[]) {
-  int N, matrix[26][26], i = 1, cost, *way;
+int reader(int argc, char* argv[], int* N, int matrix[26][26], char method[15],
+           int* printinfo) {
+  int i = 1;
   while (i < argc) {
     if (!strcmp(argv[i], "-f")) {
       int k = 0, j = 0;
@@ -30,43 +31,63 @@ int main(int argc, char* argv[]) {
         char delim = ' ';
         while (getline(ss, item, delim)) {
           matrix[k][j] = stoi(item);
-          // printf("a%d%d = %d  ", k, j, matrix[k][j]);
           j++;
         }
         k++;
       }
-      N = j;
+      *N = j;
     } else if (!strcmp(argv[i], "-m")) {
-      Voyageur voyageur(matrix, N);
-
-      if (!strcmp(argv[i + 1], "np_complete")) {
-        printf("Using full search method\n");
-        voyageur.Recursive_Complete(0, 0);
-      } else if (!strcmp(argv[i + 1], "np_partial")) {
-        printf("Using greedy algorithm\n");
-        voyageur.Partial();
-      } else {
-        printf("Error: Unable to process this method :(\n");
-      }
-
-      way = voyageur.getWay();
-      cost = voyageur.getTotalCost();
-
-      std::cout << std::endl << "Total cost for way = " << cost << std::endl;
-
-      if (cost > 0) {
-        std::cout << "Way: ";
-        for (int index = 0; index < N; index++) {
-          printf("%c ", way[index] + 65);
-        }
-        std::cout << std::endl << "Total cost for way = " << cost << std::endl;
-      }
+      strcpy(method, argv[i + 1]);
 
     } else if (!strcmp(argv[i], "-h")) {
       printf(HELPINFO);
+      *printinfo = 1;
       i--;
     }
     i += 2;
   }
+  return 0;
+}
+
+int worker(int matrix[26][26], char* method, int N, int printinfo) {
+  int *way, cost;
+  // Проверка, что выбран метод и матрица записана
+  if (matrix[0][0] != -1 && strcmp(method, "\0")) {
+    Voyageur voyageur(matrix, N);
+
+    if (!strcmp(method, "np_complete")) {
+      printf("Using full search method\n");
+      voyageur.Recursive_Complete(0, 0);  // Запуск метода полного перебора
+    } else if (!strcmp(method, "np_partial")) {
+      printf("Using greedy algorithm\n");
+      voyageur.Partial();  // Запуск жадного алгоритма
+    } else {
+      printf(
+          "Error: Unable to process this method :(\n");  // Вывод ошибку, если
+                                                         // метод определить не
+                                                         // удалось
+    }
+    way = voyageur.getWay();
+    cost = voyageur.getTotalCost();
+    if (cost > 0) {
+      std::cout << "Way: ";
+      for (int index = 0; index < N; index++) {
+        printf("%c ", way[index] + 65);
+      }
+      std::cout << std::endl << "Total cost for way = " << cost << std::endl;
+    } else {
+      std::cout << "Failed to calculate path\n";
+    }
+  } else if (!printinfo) {
+    std::cout << "Wrong input data\n";
+  }
+  return 0;
+}
+
+int main(int argc, char* argv[]) {
+  int N, matrix[26][26] = {{-1}, {-1}}, printinfo = 0;
+  char method[15] = "\0";
+  reader(argc, argv, &N, matrix, method, &printinfo);
+  worker(matrix, method, N, printinfo);
   return 0;
 }
