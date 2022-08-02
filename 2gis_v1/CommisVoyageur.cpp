@@ -21,9 +21,6 @@ int Voyageur::Recursive_Complete(int knot, int iter) {
     while (i < N) {
       while (i < N && findInMass(i, tempWay, N)) {
         i++;
-        // for (std::size_t i = 0; i < N; i++) printf("%d ", tempWay[i]);
-        // printf("findInMass(%d, tempWay, %d) = %d\n", i, N,
-        //        findInMass(i, tempWay, N));
       }
       if (i < N && matrix[knot][i] > 0) {
         answer = 0;
