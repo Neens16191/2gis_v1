@@ -59,33 +59,43 @@ int worker(int matrix[26][26], char* method, int N, int printinfo) {
     if (matrix[0][0] != -1 && strcmp(method, "\0")) {
         Voyageur voyageur(matrix, N);
 
-			if (!strcmp(argv[i + 1], "np_complete")) {
-				printf_s("Using full search method\n");
-				voyageur.Recursive_Complete(0, 0);
-			}
-			else if (!strcmp(argv[i + 1], "np_partial")) {
-				printf_s("Using greedy algorithm\n");
-				voyageur.Partial();
-			}
-			else {
-				printf_s("Error: Unable to process this method :(\n");
-			}
+        if (!strcmp(method, "np_complete")) {
+            printf("Using full search method\n");
+            voyageur.Recursive_Complete(0, 0);  // Запуск метода полного перебора
+        }
+        else if (!strcmp(method, "np_partial")) {
+            printf("Using greedy algorithm\n");
+            voyageur.Partial();  // Запуск жадного алгоритма
+        }
+        else {
+            printf(
+                "Error: Unable to process this method :(\n");  // Вывод ошибку, если
+                                                               // метод определить не
+                                                               // удалось
+        }
+        way = voyageur.getWay();
+        cost = voyageur.getTotalCost();
+        if (cost > 0) {
+            std::cout << "Way: ";
+            for (int index = 0; index < N; index++) {
+                printf("%c ", way[index] + 65);
+            }
+            std::cout << std::endl << "Total cost for way = " << cost << std::endl;
+        }
+        else {
+            std::cout << "Failed to calculate path\n";
+        }
+    }
+    else if (!printinfo) {
+        std::cout << "Wrong input data\n";
+    }
+    return 0;
+}
 
-			way = voyageur.getWay();
-			cost = voyageur.getTotalCost();
-
-			if (cost > 0) {
-				std::cout << "Way: ";
-				for (int index = 0; index < N; index++) { printf("%c ", way[index] + 65); }
-				std::cout << std::endl << "Total cost for way = " << cost << std::endl;
-			}
-
-		}
-		else if (!strcmp(argv[i], "-h")) {
-			printf_s(HELPINFO);
-			i--;
-		}
-		i += 2;
-	}
-	return 0;
+int main(int argc, char* argv[]) {
+    int N, matrix[26][26] = { {-1}, {-1} }, printinfo = 0;
+    char method[15] = "\0";
+    reader(argc, argv, &N, matrix, method, &printinfo);
+    worker(matrix, method, N, printinfo);
+    return 0;
 }
