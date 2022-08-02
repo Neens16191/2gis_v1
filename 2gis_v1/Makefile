@@ -1,6 +1,6 @@
 
 
-all: main.o libVoyageur.a
+all: clean main.o libVoyageur.a
 	g++ -o gis main.o -L. -lVoyageur
 
 main.o:

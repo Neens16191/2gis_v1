@@ -11,7 +11,9 @@ int Voyageur::Recursive_Complete(int knot, int iter) {
   int answer = 1;
   tempWay[iter] = knot;
   int i = 0;
+  // printf("ITER = %d; KNOT = %d\n", iter, knot);
   if (iter == N - 1) {
+    // printf("THIS IS LAST KNOT %d\n", knot);
     if ((totalCost > tempCost || totalCost == 0)) {
       totalCost = tempCost;
       answer = 0;
@@ -21,6 +23,9 @@ int Voyageur::Recursive_Complete(int knot, int iter) {
     while (i < N) {
       while (i < N && findInMass(i, tempWay, N)) {
         i++;
+        // for (std::size_t i = 0; i < N; i++) printf("%d ", tempWay[i]);
+        // printf("findInMass(%d, tempWay, %d) = %d\n", i, N,
+        //        findInMass(i, tempWay, N));
       }
       if (i < N && matrix[knot][i] > 0) {
         answer = 0;

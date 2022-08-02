@@ -30,6 +30,7 @@ int main(int argc, char* argv[]) {
         char delim = ' ';
         while (getline(ss, item, delim)) {
           matrix[k][j] = stoi(item);
+          // printf("a%d%d = %d  ", k, j, matrix[k][j]);
           j++;
         }
         k++;
@@ -50,6 +51,8 @@ int main(int argc, char* argv[]) {
 
       way = voyageur.getWay();
       cost = voyageur.getTotalCost();
+
+      std::cout << std::endl << "Total cost for way = " << cost << std::endl;
 
       if (cost > 0) {
         std::cout << "Way: ";
