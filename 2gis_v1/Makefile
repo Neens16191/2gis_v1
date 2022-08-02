@@ -1,5 +1,3 @@
-
-
 all: clean main.o libVoyageur.a
 	g++ -o gis main.o -L. -lVoyageur
 
