@@ -36,32 +36,31 @@ int Voyageur::Recursive_Complete(int knot, int iter) {
 	return answer;
 }
 
-int Voyageur::Partial()
-{
-	way[0] = 0;
-	for (int iter = 0, i = 0; iter < N; iter++) {
-		for (int j = 1; j < N; j++) {
-			if (i != j) {
-				if (!findInMass(j, way, N) && minWayToUnusedElem(matrix[i][j], i)) {
-					way[iter + 1] = j;
-					tempCost += matrix[i][j];
-					i = j;
-					break;
-				}
-			}
-		}
-	}
-	totalCost = tempCost;
-	return 0;
+int Voyageur::Partial() {
+  way[0] = 0;
+  for (int iter = 0, i = 0; iter < N; iter++) {
+    for (int j = 1; j < N; j++) {
+      if (i != j) {
+        if (!findInMass(j, way, N) && minWayToUnusedElem(matrix[i][j], i)) {
+          way[iter + 1] = j;
+          tempCost += matrix[i][j];
+          i = j;
+          break;
+        }
+      }
+    }
+  }
+  totalCost = tempCost;
+  return 0;
 }
 
-bool Voyageur::minWayToUnusedElem(int target, int str_number)
-{
-	for (int i = 0; i < N; i++) {
-		if (matrix[str_number][i] > 0 && matrix[str_number][i] < target && !findInMass(i, way, N))
-			return false;
-	}
-	return true;
+bool Voyageur::minWayToUnusedElem(int target, int str_number) {
+  for (int i = 0; i < N; i++) {
+    if (matrix[str_number][i] > 0 && matrix[str_number][i] < target &&
+        !findInMass(i, way, N))
+      return false;
+  }
+  return true;
 }
 
 Voyageur::Voyageur(int startMatrix[26][26], int NCount)
