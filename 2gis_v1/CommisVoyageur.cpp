@@ -1,6 +1,5 @@
 #include "CommisVoyageur.h"
 
-
 int findInMass(int target, int* mass, std::size_t size)
 {
 	std::size_t i = 0;
@@ -8,24 +7,32 @@ int findInMass(int target, int* mass, std::size_t size)
 	return target == mass[i];
 }
 
-int Voyageur::Recursive_Complete(int knot, int iter)
-{
+int Voyageur::Recursive_Complete(int knot, int iter) {
 	int answer = 1;
-	tempWay[iter] = knot; 
+	tempWay[iter] = knot;
 	int i = 0;
-	while (i < N) {
-		while (i < N && findInMass(i, tempWay, N)) {
+	if (iter == N - 1) {
+		if ((totalCost > tempCost || totalCost == 0)) {
+			totalCost = tempCost;
+			answer = 0;
+			for (std::size_t i = 0; i < N; i++) way[i] = tempWay[i];
+		}
+	}
+	else {
+		while (i < N) {
+			while (i < N && findInMass(i, tempWay, N)) {
+				i++;
+			}
+			if (i < N && matrix[knot][i] > 0) {
+				answer = 0;
+				tempCost += matrix[knot][i];
+				Recursive_Complete(i, iter + 1);
+				tempCost -= matrix[knot][i];
+				tempWay[iter + 1] = -1;
+			}
 			i++;
 		}
-		if (i < N && matrix[knot][i] > 0) {
-			answer = 0;
-			tempCost += matrix[knot][i];
-			Recursive_Complete(i, iter + 1);
-			tempCost -= matrix[knot][i];
-			tempWay[iter + 1] = -1;
-		}
-		i++;
-	} 
+	}
 	return answer;
 }
 
@@ -56,13 +63,6 @@ bool Voyageur::minWayToUnusedElem(int target, int str_number)
 	}
 	return true;
 }
-
-//int minForEachElemInMass(int target, int* mass, std::size_t size) 
-//{
-//	std::size_t i = 0;
-//	for (; i < size && target <= mass[i]; i++);
-//	return i == size;
-//}
 
 Voyageur::Voyageur(int startMatrix[26][26], int NCount)
 {
